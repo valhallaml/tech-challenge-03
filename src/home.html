@@ -6,8 +6,46 @@
         <title>Football API - Homepage</title>
     </head>
     <body>
-        <h1>Wellcome ⚽</h1>
-        <p>Explore available endpoints.</p>
-        <a href="/docs">API Documentation</a>
+        
+        <h2>Predicao resultado time campeonato</h2>
+        <form id="consultaForm">
+            <label for="num1">Finalizacoes:</label>
+            <input type="number" id="finalizacoes" name="num1" required>
+            <br><br>
+
+            <label for="num2">posses bola:</label>
+            <input type="number" id="passebola" name="num2" required>
+            <br><br>
+
+            <label for="num3">Escanteios:</label>
+            <input type="number" id="escanteios" name="num3" required>
+            <br><br>
+
+            <button type="button" onclick="consultar()">Consultar</button>
+        </form>
+
+        <h3>Resultado:</h3>
+        <pre id="resultado"></pre>
+
+        <script>
+            async function consultar() {
+                const num1 = document.getElementById('finalizacoes').value;
+                const num2 = document.getElementById('passebola').value;
+                const num3 = document.getElementById('escanteios').value;
+
+                const response = await fetch('/consultar_time', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ num1, num2, num3 })
+                });
+
+                const data = await response.json();
+                document.getElementById('resultado').textContent = JSON.stringify(data, null, 2);
+            }
+        </script>
+
+
     </body>
 </html>
