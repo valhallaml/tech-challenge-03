@@ -6,6 +6,8 @@ from service.football_api_client import FootballAPIClient
 from service.football_predict_client import FootballPredictClient
 from fastapi.responses import JSONResponse
 
+import random
+
 router = APIRouter()
 client = FootballAPIClient()
 clientPredict = FootballPredictClient()
@@ -16,13 +18,11 @@ async def get_team() -> Team:
 
 @router.get('/matches')
 async def get_matches() -> list[Match]:
-    return client.get_matches().matches
-
+    return [set_statistic(match) for match in client.get_matches().matches ]
 
 @router.get('/treinar')
 async def get_treinar() -> list[Match]:
     return clientPredict.model()
-
 
 @router.post("/consultar_time")
 async def consultar_time(data: dict):
@@ -33,4 +33,11 @@ async def consultar_time(data: dict):
 
     predict = clientPredict.predict([finalizacoes, passebola, escanteios])
 
-    return JSONResponse(content={"time": predict})
+    return JSONResponse(content = {'time': predict })
+
+def set_statistic(match: Match):
+    match.statistic.shots_on_goal = random.randint(1, 20)
+    match.statistic.finishes = random.randint(1, 20)
+    match.statistic.corners = random.randint(1, 20)
+    match.statistic.goals = random.randint(1, 20)
+    return match
