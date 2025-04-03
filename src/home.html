@@ -6,6 +6,9 @@
         <title>Football API - Homepage</title>
     </head>
     <body>
+
+        <button onclick="processar()">Processar API</button>
+        <button onclick="treinar(false)">Treinar Modelo</button>
         
         <h2>Predicao resultado time campeonato</h2>
         <form id="consultaForm">
@@ -39,6 +42,23 @@
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({ num1, num2, num3 })
+                });
+
+                const data = await response.json();
+                document.getElementById('resultado').textContent = JSON.stringify(data, null, 2);
+            }
+
+            async function processar() {
+                const response = await fetch(`/matches`, {
+                    method: 'GET'
+                });
+
+                const data = await response.json();
+                document.getElementById('resultado').textContent = JSON.stringify(data, null, 2);
+            }
+            async function treinar() {
+                const response = await fetch(`/treinar`, {
+                    method: 'GET'
                 });
 
                 const data = await response.json();

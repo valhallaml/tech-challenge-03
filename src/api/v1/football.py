@@ -18,9 +18,15 @@ async def get_team() -> Team:
 async def get_matches() -> list[Match]:
     return client.get_matches().matches
 
+
+@router.get('/treinar')
+async def get_treinar() -> list[Match]:
+    return clientPredict.model()
+
+
 @router.post("/consultar_time")
 async def consultar_time(data: dict):
-    
+
     finalizacoes = data.get("finalizacoes")
     passebola = data.get("passebola")
     escanteios = data.get("escanteios")

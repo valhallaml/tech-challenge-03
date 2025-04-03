@@ -16,7 +16,10 @@ from sklearn.metrics import accuracy_score
 
 class FootballPredictClient:
     
-    def model(self, data: dict):
+    def model(self):
+
+        #pegar todas as infos do banco
+        data = []
 
         df = pd.DataFrame(data)
 
