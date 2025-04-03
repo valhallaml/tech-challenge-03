@@ -4,6 +4,7 @@ import requests
 from typing import Dict
 
 from model.team import Team
+from model.matches import Matches
 from core.configs import settings
 
 class FootballAPIClient:
@@ -26,11 +27,17 @@ class FootballAPIClient:
         print(f'No cache for path {path}, creating')
         response = requests.get(url, headers = headers)
         response.raise_for_status()
-        data = Team.model_validate(response.json())
+        data = response.json()
 
         # save on cache
         self._cache[path] = (time.time(), data)
         return data
 
     def get_team(self, id: int) -> Team:
-        return self._request(f'/teams/{id}')
+        json = self._request(f'/teams/{id}')
+        return Team.model_validate(json)
+    
+    def get_matches(self) -> Matches:
+        '''Brasileirão de 2024'''
+        json = self._request('/competitions/2013/matches?season=2024&status=FINISHED')
+        return Matches.model_validate(json) 
