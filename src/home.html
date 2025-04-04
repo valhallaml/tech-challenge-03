@@ -12,16 +12,20 @@
 
         <h2>Predição resultado time campeonato</h2>
         <form id="consultaForm">
-            <label for="num1">Finalizações:</label>
-            <input type="number" id="finalizacoes" name="num1" required>
+            <label for="shots_on_goal">Chutes a gol:</label>
+            <input type="number" id="shots_on_goal" name="shots_on_goal" required>
             <br><br>
 
-            <label for="num2">posses bola:</label>
-            <input type="number" id="passebola" name="num2" required>
+            <label for="finishes">Finalizações:</label>
+            <input type="number" id="finishes" name="finishes" required>
             <br><br>
 
-            <label for="num3">Escanteios:</label>
-            <input type="number" id="escanteios" name="num3" required>
+            <label for="corners">Escanteios:</label>
+            <input type="number" id="corners" name="corners" required>
+            <br><br>
+            
+            <label for="goals">Gols:</label>
+            <input type="number" id="goals" name="goals" required>
             <br><br>
 
             <button type="button" onclick="consultar()">Consultar</button>
@@ -32,16 +36,17 @@
 
         <script>
             async function consultar() {
-                const num1 = document.getElementById('finalizacoes').value;
-                const num2 = document.getElementById('passebola').value;
-                const num3 = document.getElementById('escanteios').value;
+                const shots_on_goal = document.getElementById('shots_on_goal').value;
+                const finishes = document.getElementById('finishes').value;
+                const corners = document.getElementById('corners').value;
+                const goals = document.getElementById('goals').value;
 
-                const response = await fetch('/consultar_time', {
+                const response = await fetch('/api/v1/football/consultar_time', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ num1, num2, num3 })
+                    body: JSON.stringify({ shots_on_goal, finishes, corners, goals })
                 });
 
                 const data = await response.json();
@@ -57,7 +62,7 @@
                 document.getElementById('resultado').textContent = JSON.stringify(data, null, 2);
             }
             async function treinar() {
-                const response = await fetch(`/treinar`, {
+                const response = await fetch(`/api/v1/football/treinar`, {
                     method: 'GET'
                 });
 
