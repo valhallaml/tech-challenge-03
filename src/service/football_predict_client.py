@@ -20,23 +20,26 @@ class FootballPredictClient:
     
     def model(self, db):
 
-        #pegar todas as infos do banco
+        # pegar todas as infos do banco
         result: list[MatchEntity] = MatchEntityRepository.find_all(db)
 
-        data = [
-            {k: v for k, v in row.__dict__.items() if k != '_sa_instance_state'}
-            for row in result
-        ]
+        data = {
+            'shots_on_goal': [m.shots_on_goal for m in result],
+            'finishes': [m.finishes for m in result],
+            'corners': [m.corners for m in result],
+            'goals': [m.goals for m in result],
+            'winner': [m.winner for m in result]
+        }
 
         df = pd.DataFrame(data)
 
         # Definindo features e target
-        X = df[['shots_on_goal', 'finishes', 'corners', 'goals']]
-        y = df[['winner']]
+        x = df[['shots_on_goal', 'finishes', 'corners', 'goals']]
+        y = df['winner']
 
         # Normalizando os dados
         scaler = StandardScaler()
-        x_scaled = scaler.fit_transform(X)
+        x_scaled = scaler.fit_transform(x)
 
         # Dividindo em treino e teste
         x_train, _, y_train, _ = train_test_split(x_scaled, y, test_size=0.3, random_state=42, stratify=y)
@@ -58,7 +61,7 @@ class FootballPredictClient:
         scaler = joblib.load('scaler.pkl')
 
         # Criar novos dados para previsão
-        new_data = pd.DataFrame([data])
+        new_data = pd.DataFrame([list(data.values())])
 
         # Normalizar os novos dados
         new_data_scaled = scaler.transform(new_data)

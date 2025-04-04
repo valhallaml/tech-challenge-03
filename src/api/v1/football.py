@@ -48,7 +48,7 @@ async def consultar_time(data: dict):
     }
     predict = clientPredict.predict(data)
 
-    return JSONResponse(content = { 'time': predict })
+    return predict
 
 def to_entity(match: Match) -> MatchEntity:
 
@@ -67,8 +67,6 @@ def to_entity(match: Match) -> MatchEntity:
     return match_entity
 
 def get_winner(winner: str) -> int:
-    if winner == 'AWAY_TEAM':
-        return 1
     if winner == 'HOME_TEAM':
-        return 2
+        return 1
     return 0
