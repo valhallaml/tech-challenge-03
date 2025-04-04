@@ -3,6 +3,7 @@ import uvicorn
 
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
+from fastapi.responses import FileResponse
 
 from api.router import api_router
 from core.database import Base, engine
@@ -17,6 +18,10 @@ app = FastAPI(
     summary = '',
     version = '1.0.0'
 )
+
+@app.get('/favicon.ico', include_in_schema=False)
+async def favicon():
+    return FileResponse('src/favicon.ico')
 
 @app.get('/', response_class=HTMLResponse)
 async def home():
