@@ -8,6 +8,8 @@
   - [Criar ambiente Python](#criar-ambiente-python)
   - [Ativar ambiente Python](#ativar-ambiente-python)
 - [Executar localmente](#executar-localmente)
+- [Executando com docker compose](#executando-com-docker-compose)
+- [Documentação](#documentação)
 
 ## Preditor de Resultados - Campeonato Brasileiro Série A
 
@@ -56,8 +58,21 @@ source .venv/bin/activate
 ## Executar localmente
 
 > Antes de executar, copie `.env.sample` e renomeie para `.env`. Substitua as variáveis ​​pelos valores corretos.
+> É preciso criar uma conta em [football-data](https://www.football-data.org/client/login) para ter acesso a um token
 
 ```bash
 pip install -r requirements.txt
 python src/main.py
 ```
+
+Acesse <http://localhost:8000/>
+
+## Executando com docker compose
+
+```bash
+docker compose up --build --force-recreate
+```
+
+## Documentação
+
+- <http://localhost:8000/docs>
